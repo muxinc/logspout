@@ -206,6 +206,9 @@ func (m *SyslogMessage) Priority() syslog.Priority {
 }
 
 func (m *SyslogMessage) Hostname() string {
+	if name, ok := m.Message.Container.Config.Labels[getopt("CONTAINER_HOSTNAME_LABEL", "")]; ok {
+		return name
+	}
 	return hostname
 }
 
@@ -214,5 +217,8 @@ func (m *SyslogMessage) Timestamp() string {
 }
 
 func (m *SyslogMessage) ContainerName() string {
+	if name, ok := m.Message.Container.Config.Labels[getopt("CONTAINER_NAME_LABEL", "")]; ok {
+		return name
+	}
 	return m.Message.Container.Name[1:]
 }
